@@ -1,0 +1,181 @@
+diff -ur svglite/DESCRIPTION svglite_new/DESCRIPTION
+--- svglite/DESCRIPTION	2022-02-03 09:00:02.000000000 +0000
++++ svglite_new/DESCRIPTION	2022-02-04 18:10:21.815225912 +0000
+@@ -19,8 +19,6 @@
+ Encoding: UTF-8
+ SystemRequirements: C++11, libpng
+ Depends: R (>= 3.0.0)
+-Imports: systemfonts (>= 1.0.0)
+-LinkingTo: cpp11, systemfonts
+ Suggests: htmltools, testthat, xml2 (>= 1.0.0), covr, fontquiver (>=
+         0.2.0), knitr, rmarkdown
+ License: GPL (>= 2)
+diff -ur svglite/NAMESPACE svglite_new/NAMESPACE
+--- svglite/NAMESPACE	2021-02-02 14:20:21.000000000 +0000
++++ svglite_new/NAMESPACE	2022-02-07 14:12:31.956237187 +0000
+@@ -5,17 +5,9 @@
+ export(create_svgz)
+ export(editSVG)
+ export(font_face)
+-export(font_feature)
+ export(htmlSVG)
+-export(register_font)
+-export(register_variant)
+ export(stringSVG)
+ export(svglite)
+ export(svgstring)
+ export(xmlSVG)
+-importFrom(systemfonts,font_feature)
+-importFrom(systemfonts,font_info)
+-importFrom(systemfonts,match_font)
+-importFrom(systemfonts,register_font)
+-importFrom(systemfonts,register_variant)
+ useDynLib(svglite, .registration = TRUE)
+diff -ur svglite/R/aaa.R svglite_new/R/aaa.R
+--- svglite/R/aaa.R	2021-02-02 13:32:25.000000000 +0000
++++ svglite_new/R/aaa.R	2022-02-04 18:15:47.200351916 +0000
+@@ -1,11 +0,0 @@
+-#' @importFrom systemfonts register_variant
+-#' @export
+-systemfonts::register_variant
+-
+-#' @importFrom systemfonts register_font
+-#' @export
+-systemfonts::register_font
+-
+-#' @importFrom systemfonts font_feature
+-#' @export
+-systemfonts::font_feature
+diff -ur svglite/R/fonts.R svglite_new/R/fonts.R
+--- svglite/R/fonts.R	2020-08-05 13:08:22.000000000 +0100
++++ svglite_new/R/fonts.R	2022-02-07 14:20:28.924042113 +0000
+@@ -20,7 +20,12 @@
+ 
+ #' @importFrom systemfonts font_info
+ match_family <- function(font, bold = FALSE, italic = FALSE) {
+-  font_info(font, bold = bold, italic = italic)$family[1]
++  # font_info(font, bold = bold, italic = italic)$family[1]
++  if (font %in% r_font_families){
++    return(font)
++  } else {
++    return('sans')
++  }
+ }
+ 
+ validate_aliases <- function(system_fonts, user_fonts) {
+diff -ur svglite/src/Makevars svglite_new/src/Makevars
+--- svglite/src/Makevars	2020-06-11 19:13:04.000000000 +0100
++++ svglite_new/src/Makevars	2022-02-04 18:09:47.410684944 +0000
+@@ -1,3 +1,2 @@
+ CXX_STD = CXX11
+ 
+-PKG_LIBS = -lpng -lz
+diff -ur svglite/src/devSVG.cpp svglite_new/src/devSVG.cpp
+--- svglite/src/devSVG.cpp	2022-01-03 12:58:16.000000000 +0000
++++ svglite_new/src/devSVG.cpp	2022-02-04 18:13:14.237940150 +0000
+@@ -27,7 +27,6 @@
+ #include <cpp11/environment.hpp>
+ #include <cpp11/external_pointer.hpp>
+ #include <cpp11/protect.hpp>
+-#include <systemfonts.h>
+ #include <string>
+ #include <cstring>
+ #include <iomanip>
+@@ -288,13 +287,14 @@
+ 
+ inline std::string fontname(const char* family_, int face,
+                             cpp11::list const& system_aliases,
+-                            cpp11::list const& user_aliases, FontSettings& font) {
++                            cpp11::list const& user_aliases, void* font) {
+   std::string family(family_);
+   if (face == 5)
+     family = "symbol";
+   else if (family == "")
+     family = "sans";
+ 
++  /*
+   std::string alias = find_system_alias(family, system_aliases);
+   if (!alias.size()) {
+     alias = find_user_alias(family, user_aliases, face, "name");
+@@ -310,6 +310,7 @@
+     family_name.erase(family_name.find('\0'));
+     return family_name;
+   }
++  */
+   return family;
+ }
+ 
+@@ -324,6 +325,7 @@
+   return find_user_alias(family, user_aliases, face, "file");
+ }
+ 
++/*
+ inline FontSettings get_font_file(const char* family, int face, cpp11::list user_aliases) {
+   const char* fontfamily = family;
+   if (is_symbol(face)) {
+@@ -342,6 +344,7 @@
+ 
+   return locate_font_with_features(fontfamily, is_italic(face), is_bold(face));
+ }
++*/
+ 
+ inline void write_escaped(SvgStreamPtr stream, const char* text) {
+   for(const char* cur = text; *cur != '\0'; ++cur) {
+@@ -551,14 +554,14 @@
+     c = -c;
+   }
+ 
+-  FontSettings font = get_font_file(gc->fontfamily, gc->fontface, svgd->user_aliases);
++  //FontSettings font = get_font_file(gc->fontfamily, gc->fontface, svgd->user_aliases);
+ 
+-  int error = glyph_metrics(c, font.file, font.index, gc->ps * gc->cex * svgd->scaling, 1e4, ascent, descent, width);
+-  if (error != 0) {
++  //int error = glyph_metrics(c, font.file, font.index, gc->ps * gc->cex * svgd->scaling, 1e4, ascent, descent, width);
++  //if (error != 0) {
+     *ascent = 0;
+     *descent = 0;
+     *width = 0;
+-  }
++  //}
+   double mod = 72./1e4;
+   *ascent *= mod;
+   *descent *= mod;
+@@ -823,15 +826,15 @@
+ double svg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
+   SVGDesc *svgd = (SVGDesc*) dd->deviceSpecific;
+ 
+-  FontSettings font = get_font_file(gc->fontfamily, gc->fontface, svgd->user_aliases);
++  //FontSettings font = get_font_file(gc->fontfamily, gc->fontface, svgd->user_aliases);
+ 
+   double width = 0.0;
+ 
+-  int error = string_width(str, font.file, font.index, gc->ps * gc->cex * svgd->scaling, 1e4, 1, &width);
++  //int error = string_width(str, font.file, font.index, gc->ps * gc->cex * svgd->scaling, 1e4, 1, &width);
+ 
+-  if (error != 0) {
+-    width = 0.0;
+-  }
++  //if (error != 0) {
++  //  width = 0.0;
++  //}
+ 
+   return width * 72. / 1e4;
+ }
+@@ -923,7 +926,7 @@
+   write_style_begin(stream);
+   write_style_fontsize(stream, fontsize * svgd->scaling, true);
+ 
+-  FontSettings font_info = get_font_file(gc->fontfamily, gc->fontface, svgd->user_aliases);
++  /*FontSettings font_info = get_font_file(gc->fontfamily, gc->fontface, svgd->user_aliases);
+   int weight = get_font_weight(font_info.file, font_info.index);
+ 
+   if (weight != 400) {
+@@ -954,6 +957,8 @@
+       (*stream) << (i == font_info.n_features - 1 ? ";" : ",");
+     }
+   }
++  */
++  write_style_str(stream, "font-family", "sans");
+ 
+   write_style_end(stream);
+ 

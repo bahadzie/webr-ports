@@ -1,0 +1,3 @@
+NOTE: The svglite package is patched to remove references to the systemfonts
+package. Probably only base R fonts will work. It is likely that font metrics
+are also broken.
