@@ -175,7 +175,7 @@ diff -ur svglite/src/devSVG.cpp svglite_new/src/devSVG.cpp
      }
    }
 +  */
-+  write_style_str(stream, "font-family", "sans");
++  write_style_str(stream, "font-family", gc->fontfamily);
  
    write_style_end(stream);
  
