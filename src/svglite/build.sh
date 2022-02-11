@@ -19,7 +19,7 @@ patch --ignore-whitespace -p1 < "../patches/${PKG_NAME}.patch"
 cd ..
 
 mkdir -p root/usr/lib/R/library/
-R CMD INSTALL --library="root/usr/lib/R/library" "${PKG_NAME}" --no-docs --no-test-load --no-staged-install
+R CMD INSTALL --library="root/usr/lib/R/library" "${PKG_NAME}" --no-docs --no-test-load --no-staged-install --no-byte-compile
 rm -rf "${PKG_NAME}"
 rm "${PKG_NAME}.tar.gz"
 
