@@ -21,4 +21,4 @@ The simplest way to build these packages is within the environment provided by t
 * cpp11
 * ncldata
 * svglite
-
+* ggplot2 (and prerequisites)
