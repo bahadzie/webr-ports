@@ -1,0 +1,15 @@
+diff -ur nlme/src/rs.f nlme_new/src/rs.f
+--- nlme/src/rs.f	2018-02-28 08:24:47.000000000 +0000
++++ nlme_new/src/rs.f	2022-02-22 09:49:34.971460656 +0000
+@@ -38,9 +38,8 @@
+ c Use a wrapper for C99 hypot, which is guaranteed to handle special values
+ c such as NaN.
+       DOUBLE PRECISION FUNCTION PYTHAG(A,B)
+-      DOUBLE PRECISION A,B,P
+-      CALL HYPOT(A,B,P)
+-      PYTHAG = P
++      DOUBLE PRECISION A,B
++      PYTHAG = SQRT(A*A + B*B)
+       RETURN
+       END
+ 
