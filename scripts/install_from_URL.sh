@@ -10,14 +10,16 @@ rm -rf tmp
 mkdir tmp
 rm -f ~/.R/Makevars
 
-cat << EOF > ~/.R/Makevars 
+cat << \EOF > ~/.R/Makevars
 CXX98=em++
 CXX11=em++
 CXX14=em++
 CXX17=em++
 CXX20=em++
 CC=emcc
+CXX=em++
 CFLAGS=-std=gnu11 -I/app/build/R-4.1.2/include
+CXXFLAGS=-std=gnu++11 -D__STRICT_ANSI__ -I/app/build/R-4.1.2/include
 CXX98FLAGS=-std=gnu++98 -I/app/build/R-4.1.2/include
 CXX11FLAGS=-std=gnu++11 -I/app/build/R-4.1.2/include
 CXX14FLAGS=-std=gnu++14 -I/app/build/R-4.1.2/include
