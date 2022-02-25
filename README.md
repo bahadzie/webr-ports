@@ -19,7 +19,8 @@ The simplest way to build these packages is within the environment provided by t
 ## Package List
 
 * cpp11
+* dplyr (and prerequisites)
+* ggplot2 (and prerequisites)
+* lubridate
 * ncldata
 * svglite
-* ggplot2 (and prerequisites)
-* dplyr (and prerequisites)
