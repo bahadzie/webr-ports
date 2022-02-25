@@ -1,0 +1,26 @@
+--- cli/src/thread.c	2021-11-12 11:56:09.000000000 +0000
++++ cli_new/src/thread.c	2022-02-25 13:47:35.189160276 +0000
+@@ -47,22 +47,7 @@
+   cli__tick_ts.tv_nsec = (cticktime % 1000) * 1000 * 1000;
+   int ret = 0;
+ 
+-  if (! getenv("CLI_NO_THREAD")) {
+-    ret = pthread_create(
+-      & tick_thread,
+-      /* attr = */ 0,
+-      clic_thread_func,
+-      /* arg = */ NULL
+-    );
+-    /* detaching makes it easier to clean up resources
+-     * On Windows this causes issues and the thread cannot
+-     * be cancelled, so we don't do it there. */
+-#ifndef _WIN32
+-    if (!ret) pthread_detach(tick_thread);
+-#endif
+-  } else {
+-    cli__reset = 0;
+-  }
++  cli__reset = 0;
+ 
+   return ret;
+ }
