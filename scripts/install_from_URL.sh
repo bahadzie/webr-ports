@@ -20,11 +20,11 @@ CC=emcc
 CXX=em++
 CFLAGS=-std=gnu11 -I/app/build/R-4.1.2/include
 CXXFLAGS=-std=gnu++11 -D__STRICT_ANSI__ -I/app/build/R-4.1.2/include
-CXX98FLAGS=-std=gnu++98 -I/app/build/R-4.1.2/include
-CXX11FLAGS=-std=gnu++11 -I/app/build/R-4.1.2/include
-CXX14FLAGS=-std=gnu++14 -I/app/build/R-4.1.2/include
-CXX17FLAGS=-std=gnu++17 -I/app/build/R-4.1.2/include
-CXX20FLAGS=-std=gnu++20 -I/app/build/R-4.1.2/include
+CXX98FLAGS=-std=gnu++98 -D__STRICT_ANSI__ -I/app/build/R-4.1.2/include
+CXX11FLAGS=-std=gnu++11 -D__STRICT_ANSI__ -I/app/build/R-4.1.2/include
+CXX14FLAGS=-std=gnu++14 -D__STRICT_ANSI__ -I/app/build/R-4.1.2/include
+CXX17FLAGS=-std=gnu++17 -D__STRICT_ANSI__ -I/app/build/R-4.1.2/include
+CXX20FLAGS=-std=gnu++20 -D__STRICT_ANSI__ -I/app/build/R-4.1.2/include
 LDFLAGS=-s SIDE_MODULE=1 -s WASM_BIGINT -s ASSERTIONS=1
 FC=emfc
 FLIBS=
