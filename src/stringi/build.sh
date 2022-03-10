@@ -27,6 +27,6 @@ rm -rf "${PKG_NAME}"
 rm "${PKG_NAME}.tar.gz"
 
 mkdir -p "../../dist/${PKG_NAME}/"
-file_packager "../../dist/${PKG_NAME}/${PKG_NAME}.data" --js-output="../../dist/${PKG_NAME}/${PKG_NAME}.js" --preload 'root@/' --use-preload-plugins
+file_packager "../../dist/${PKG_NAME}/${PKG_NAME}.data" --js-output="../../dist/${PKG_NAME}/${PKG_NAME}.js" --preload 'root@/' --use-preload-plugins --exclude '**/icudt55l.dat'
 rm -rf root
 rm ~/.R/Makevars
