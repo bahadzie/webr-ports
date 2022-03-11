@@ -18,9 +18,15 @@ The simplest way to build these packages is within the environment provided by t
 
 ## Package List
 
-* cpp11
-* dplyr (and prerequisites)
-* ggplot2 (and prerequisites)
-* lubridate
+The following packages, along with their dependencies, are available:
+
+* dplyr
+* forcats
+* ggplot2
 * ncldata
+* purrr
+* readr
+* stringr
 * svglite
+* tibble
+* tidyr
