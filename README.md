@@ -1,5 +1,9 @@
 # webR Ports - R packages ported for webR
 
+## NOTE: ARCHIVED
+
+This repository has been archived. All future development will be at https://github.com/r-wasm/webr-repo.
+
 ## Using webR packages
 
 The R packages in this repo are built and distributed in the `dist` directory, and so can be loaded directly into the
